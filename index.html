@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Para mi gran amor ❤️️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Great+Vibes&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --env-bg: #89b4d8;
+      --env-dark: #6a9ac2;
+      --env-flap: #9bc0e0;
+      --rose: #d63353;
+      --gold: #f4c430;
+      --cream: #fffaf2;
+      --primary: #c92a42;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      background: radial-gradient(circle at center, #d8eaf7 0%, #b5d5ef 100%);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fondo animado */
+    .bg-elements {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .sun-float {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      animation: rotateSun 18s linear infinite;
+    }
+    @keyframes rotateSun {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .floating-heart {
+      position: absolute;
+      font-size: 20px;
+      color: rgba(214, 51, 83, 0.45);
+      animation: floatUp 7s linear infinite;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(105vh) scale(0.6); opacity: 0; }
+      20% { opacity: 0.8; }
+      80% { opacity: 0.8; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* Reproductor de música oculto / botón */
+    .music-btn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #d63353;
+      color: #d63353;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Contenedor principal */
+    .app-viewport {
+      width: 100%;
+      max-width: 480px;
+      min-height: 580px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* PANTALLA 1: SOBRE Y CARTA DESLIZANTE */
+    .envelope-screen {
+      position: relative;
+      width: 320px;
+      height: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .envelope-box {
+      position: absolute;
+      bottom: 0;
+      width: 320px;
+      height: 220px;
+      background: var(--env-bg);
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 15px 35px rgba(50, 75, 100, 0.25);
+      z-index: 15;
+    }
+    .env-pocket-left {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 110px 0 110px 160px;
+      border-color: transparent transparent transparent var(--env-dark);
+      border-bottom-left-radius: 16px;
+      z-index: 20;
+    }
+    .env-pocket-right {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 110px 160px 110px 0;
+      border-color: transparent var(--env-dark) transparent transparent;
+      border-bottom-right-radius: 16px;
+      z-index: 20;
+    }
+    .env-pocket-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 160px 120px 160px;
+      border-color: transparent transparent var(--env-bg) transparent;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      z-index: 22;
+    }
+    .env-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 120px 160px 0 160px;
+      border-color: var(--env-flap) transparent transparent transparent;
+      transform-origin: top center;
+      transition: transform 0.6s ease, z-index 0.2s;
+      z-index: 25;
+    }
+    .env-flap.open {
+      transform: rotateX(180deg);
+      z-index: 5;
+    }
+
+    /* Sello postal de lacre con corazón */
+    .wax-seal {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 68px;
+      height: 68px;
+      background: radial-gradient(circle at 35% 35%, #e64c65, #9c152d);
+      border-radius: 50%;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.35), inset 0 2px 4px rgba(255,255,255,0.4);
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .wax-seal:hover {
+      transform: translate(-50%, -50%) scale(1.06);
+    }
+    .wax-seal::after {
+      content: '❤️';
+      font-size: 26px;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.4));
+    }
+    .seal-hint {
+      position: absolute;
+      bottom: 25px;
+      font-size: 13px;
+      color: #2c4a63;
+      font-weight: 700;
+      animation: pulse 1.5s infinite;
+      z-index: 25;
+      text-align: center;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; transform: scale(0.96); }
+      50% { opacity: 1; transform: scale(1.04); }
+    }
+
+    /* Hoja deslizante (Happy Boyfriend Day) */
+    .sheet-card {
+      position: absolute;
+      bottom: 15px;
+      width: 290px;
+      height: 390px;
+      background: var(--cream);
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+      z-index: 10;
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      transition: transform 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.15), z-index 0.1s ease 0.4s;
+      border: 1px solid #fae2cc;
+    }
+    .sheet-card.pulled-out {
+      transform: translateY(-165px);
+      z-index: 35;
+    }
+    .card-border-frame {
+      width: 100%;
+      height: 100%;
+      border: 2px dashed #f0a6b5;
+      border-radius: 8px;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      position: relative;
+    }
+    .card-date {
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #888;
+      font-weight: 700;
+    }
+    .card-title-hbd {
+      font-family: 'Great Vibes', cursive;
+      font-size: 40px;
+      line-height: 1.1;
+      color: #cf1b3c;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      margin-top: 5px;
+    }
+    .card-subtitle {
+      font-size: 13px;
+      font-weight: 700;
+      color: #654321;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .bouquet-svg {
+      width: 170px;
+      height: 80px;
+    }
+
+    /* PANTALLAS TIPO DIAPOSITIVA (2, 3, 4) */
+    .screen-card {
+      display: none;
+      width: 100%;
+      max-width: 380px;
+      background: var(--cream);
+      border-radius: 20px;
+      box-shadow: 0 18px 45px rgba(50, 75, 100, 0.2);
+      padding: 26px 20px;
+      border: 3px solid #ffccd5;
+      position: relative;
+      animation: fadeInSlide 0.5s ease forwards;
+    }
+    @keyframes fadeInSlide {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .letter-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: #b51733;
+      margin-bottom: 14px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .letter-body {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #3b2a2a;
+      text-align: justify;
+      font-weight: 600;
+      background: rgba(255,255,255,0.6);
+      padding: 14px;
+      border-radius: 12px;
+      border-left: 3px solid #e64c65;
+    }
+
+    /* Botones de navegación */
+    .btn-next {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #e63956, #b81434);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      font-size: 15px;
+      font-weight: 800;
+      border-radius: 25px;
+      cursor: pointer;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 6px 16px rgba(184, 20, 52, 0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-next:active {
+      transform: scale(0.96);
+    }
+
+    /* PANTALLA 3: PREGUNTA Y BOTONES ESCURRIDIZOS */
+    .question-box {
+      text-align: center;
+      padding: 10px 0;
+    }
+    .question-title {
+      font-size: 17px;
+      color: #7a4f57;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .question-main {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: #b51733;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 25px;
+    }
+    .interactive-arena {
+      position: relative;
+      width: 100%;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+    }
+    .btn-choice {
+      padding: 12px 30px;
+      font-size: 17px;
+      font-weight: 800;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .btn-yes {
+      background: #2cb67d;
+      color: white;
+      box-shadow: 0 6px 16px rgba(44, 182, 125, 0.35);
+    }
+    .btn-no {
+      background: #e63956;
+      color: white;
+      position: absolute;
+      box-shadow: 0 6px 16px rgba(230, 57, 86, 0.3);
+      user-select: none;
+    }
+
+    /* PANTALLA 4: RESULTADO FINAL */
+    .final-content {
+      text-align: center;
+      padding: 10px 5px;
+    }
+    .final-text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #4a2830;
+      font-weight: 700;
+      margin-top: 15px;
+    }
+    .monitos-img {
+      width: 140px;
+      margin: 10px auto;
+      display: block;
+      animation: bounceMonitos 1.6s infinite alternate ease-in-out;
+    }
+    @keyframes bounceMonitos {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Música de fondo: Flaco de Mon Laferte (Audio oficial YouTube Embed) -->
+  <button class="music-btn" id="musicToggleBtn" onclick="toggleAudio()">
+    🎵 Reproducir Canción
+  </button>
+  <div id="yt-player-box" style="position: absolute; width: 1px; height: 1px; opacity: 0.01; pointer-events: none;">
+    <iframe id="monAudio" width="10" height="10" 
+      src="https://www.youtube.com/embed/8b9X_eF3yvg?enablejsapi=1&autoplay=0&loop=1&playlist=8b9X_eF3yvg" 
+      frameborder="0" allow="autoplay">
+    </iframe>
+  </div>
+
+  <!-- Elementos flotantes de amor (solecitos y corazones) -->
+  <div class="bg-elements" id="bgArea">
+    <div class="sun-float">
+      <svg width="45" height="45" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="22" fill="#ffd166"/>
+        <g stroke="#ffd166" stroke-width="6" stroke-linecap="round">
+          <line x1="50" y1="12" x2="50" y2="2"/>
+          <line x1="50" y1="88" x2="50" y2="98"/>
+          <line x1="12" y1="50" x2="2" y2="50"/>
+          <line x1="88" y1="50" x2="98" y2="50"/>
+          <line x1="23" y1="23" x2="16" y2="16"/>
+          <line x1="77" y1="77" x2="84" y2="84"/>
+          <line x1="23" y1="77" x2="16" y2="84"/>
+          <line x1="77" y1="23" x2="84" y2="16"/>
+        </g>
+        <circle cx="44" cy="48" r="3" fill="#333"/>
+        <circle cx="56" cy="48" r="3" fill="#333"/>
+        <path d="M 45 56 Q 50 61 55 56" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="app-viewport">
+
+    <!-- FASE 1: SOBRE CON SELLO POSTAL -->
+    <div class="envelope-screen" id="sceneEnvelope">
+      <!-- Hoja interior que sobresaldrá -->
+      <div class="sheet-card" id="letterSheet">
+        <div class="card-border-frame">
+          <div class="card-date">03 • 10 • 2026</div>
+          <div class="card-title-hbd">
+            ♡ Happy<br>Boyfriends Day ♡
+          </div>
+          <div class="card-subtitle">
+            Gracias por alegrar mi vida
+          </div>
+          <!-- Dibujo de flores / ramo -->
+          <svg class="bouquet-svg" viewBox="0 0 200 100">
+            <path d="M70,80 Q100,50 130,80" stroke="#c94b61" stroke-width="2" fill="none"/>
+            <circle cx="85" cy="55" r="14" fill="#e63956"/>
+            <circle cx="115" cy="55" r="14" fill="#e63956"/>
+            <circle cx="100" cy="45" r="15" fill="#ff4d6d"/>
+            <circle cx="70" cy="62" r="11" fill="#ff758f"/>
+            <circle cx="130" cy="62" r="11" fill="#ff758f"/>
+            <!-- Lazito -->
+            <path d="M92,85 C95,78 105,78 108,85" stroke="#f4c430" stroke-width="3" fill="none"/>
+            <line x1="100" y1="83" x2="94" y2="96" stroke="#f4c430" stroke-width="2.5"/>
+            <line x1="100" y1="83" x2="106" y2="96" stroke="#f4c430" stroke-width="2.5"/>
+          </svg>
+          <button class="btn-next" onclick="goToScreen(2)">Ver la carta ❤️️</button>
+        </div>
+      </div>
+
+      <!-- Partes del sobre -->
+      <div class="envelope-box">
+        <div class="env-flap" id="envFlap"></div>
+        <div class="env-pocket-left"></div>
+        <div class="env-pocket-right"></div>
+        <div class="env-pocket-bottom"></div>
+        <!-- Sello de cera -->
+        <div class="wax-seal" id="waxSeal" onclick="openEnvelope()" title="Presiona para abrir"></div>
+      </div>
+      <div class="seal-hint" id="sealHint">✨ Toca el sello para abrir ✨</div>
+    </div>
+
+    <!-- FASE 2: CARTA COMPLETA -->
+    <div class="screen-card" id="screenLetter">
+      <div class="letter-title">Para mi gran amor:</div>
+      <div class="letter-body">
+        Amor mío, no se necesita ser fecha especial para decirte cuánto te amo y lo tanto que me haces feliz, eres un maravilloso novio, gracias por siempre esforzarte por nosotros y dar todo de ti, estoy demasiado orgullosa del hombre, hermano, hijo y novio que eres, te admiro por echarle tantas ganas a todo, lo estás haciendo excelente mi amor.
+        <br><br>
+        Eres el amor de mi vida, gracias por compartir tu vida junto a mí y darme el honor de ser tu novia, te amo con todo mi corazón y espero me permitas continuar junto a ti, escribiendo esta linda historia❤️.
+      </div>
+      <button class="btn-next" onclick="goToScreen(3)">Continuar ✨</button>
+    </div>
+
+    <!-- FASE 3: PREGUNTA IMPORTANTE -->
+    <div class="screen-card" id="screenQuestion">
+      <div class="question-box">
+        <div class="question-title">Te haré una pregunta importante...</div>
+        <div class="question-main">¿Quieres pasar el resto de tu vida junto a mí? Amándonos❤️</div>
+        
+        <div class="interactive-arena" id="arena">
+          <button class="btn-choice btn-yes" onclick="answerYes()">¡Sí! 🥰</button>
+          <button class="btn-choice btn-no" id="btnNo" onmouseover="dodgeNo()" onclick="dodgeNo()" ontouchstart="dodgeNo()">No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 4: FINAL CON MONITOS Y SOLECITO -->
+    <div class="screen-card" id="screenFinal">
+      <div class="final-content">
+        <!-- Ilustración de monitos tiernos enamorados -->
+        <svg class="monitos-img" viewBox="0 0 160 110">
+          <!-- Monito 1 -->
+          <circle cx="55" cy="55" r="28" fill="#fff" stroke="#444" stroke-width="3"/>
+          <ellipse cx="48" cy="52" rx="3.5" ry="4.5" fill="#222"/>
+          <ellipse cx="62" cy="52" rx="3.5" ry="4.5" fill="#222"/>
+          <path d="M 50 62 Q 55 67 60 62" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <circle cx="42" cy="58" r="4" fill="#ffb3ba"/>
+          <circle cx="68" cy="58" r="4" fill="#ffb3ba"/>
+          
+          <!-- Monito 2 -->
+          <circle cx="105" cy="55" r="28" fill="#fff" stroke="#444" stroke-width="3"/>
+          <ellipse cx="98" cy="52" rx="3.5" ry="4.5" fill="#222"/>
+          <ellipse cx="112" cy="52" rx="3.5" ry="4.5" fill="#222"/>
+          <path d="M 100 62 Q 105 67 110 62" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <circle cx="92" cy="58" r="4" fill="#ffb3ba"/>
+          <circle cx="118" cy="58" r="4" fill="#ffb3ba"/>
+          <path d="M 118 36 Q 128 30 124 43" stroke="#e63956" stroke-width="3" fill="#ff758f"/>
+          <!-- Corazón central -->
+          <path d="M80,30 C75,20 65,22 65,32 C65,42 80,52 80,52 C80,52 95,42 95,32 C95,22 85,20 80,30 Z" fill="#e63956"/>
+        </svg>
+
+        <div class="final-text">
+          “Ay, ya sabía mi goyito, que para nada te viste obligado a tomar esta decisión. Te amo con todo mi corazón, eres el mejor novio del mundo mundial, el hombre de mis sueños🥰🥰❤️☀️”
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Generar corazones flotantes de fondo
+    const bgArea = document.getElementById('bgArea');
+    for (let i = 0; i < 14; i++) {
+      const h = document.createElement('div');
+      h.className = 'floating-heart';
+      h.innerHTML = Math.random() > 0.3 ? '❤️️' : '☀️';
+      h.style.left = Math.random() * 95 + 'vw';
+      h.style.animationDelay = (Math.random() * 6) + 's';
+      h.style.animationDuration = (6 + Math.random() * 5) + 's';
+      bgArea.appendChild(h);
+    }
+
+    // Audio control
+    let isPlaying = false;
+    function toggleAudio() {
+      const iframe = document.getElementById('monAudio');
+      const btn = document.getElementById('musicToggleBtn');
+      if (!isPlaying) {
+        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        btn.innerHTML = '⏸️ Pausar Canción';
+        isPlaying = true;
+      } else {
+        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        btn.innerHTML = '🎵 Reproducir Canción';
+        isPlaying = false;
+      }
+    }
+
+    // Animación de apertura del sobre
+    let isOpened = false;
+    function openEnvelope() {
+      if (isOpened) return;
+      isOpened = true;
+      
+      // Auto arrancar música al interactuar
+      if (!isPlaying) toggleAudio();
+
+      document.getElementById('envFlap').classList.add('open');
+      document.getElementById('waxSeal').style.display = 'none';
+      document.getElementById('sealHint').style.display = 'none';
+
+      setTimeout(() => {
+        document.getElementById('letterSheet').classList.add('pulled-out');
+      }, 450);
+    }
+
+    // Navegación entre pantallas
+    function goToScreen(num) {
+      document.getElementById('sceneEnvelope').style.display = 'none';
+      document.getElementById('screenLetter').style.display = 'none';
+      document.getElementById('screenQuestion').style.display = 'none';
+      document.getElementById('screenFinal').style.display = 'none';
+
+      if (num === 2) {
+        document.getElementById('screenLetter').style.display = 'block';
+      } else if (num === 3) {
+        document.getElementById('screenQuestion').style.display = 'block';
+        resetNoButton();
+      } else if (num === 4) {
+        document.getElementById('screenFinal').style.display = 'block';
+      }
+    }
+
+    // Esquivar botón No
+    const btnNo = document.getElementById('btnNo');
+    function resetNoButton() {
+      btnNo.style.position = 'static';
+      btnNo.style.transform = 'none';
+    }
+
+    function dodgeNo(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      btnNo.style.position = 'absolute';
+      const arena = document.getElementById('arena');
+      const rect = arena.getBoundingClientRect();
+      const maxX = rect.width - 80;
+      const maxY = rect.height - 40;
+
+      const randomX = Math.floor(Math.random() * maxX) - (rect.width / 2) + 40;
+      const randomY = Math.floor(Math.random() * maxY) - (rect.height / 2) + 20;
+
+      btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    }
+
+    function answerYes() {
+      goToScreen(4);
+    }
+  </script>
+</body>
+</html>
